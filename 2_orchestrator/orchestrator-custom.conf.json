@@ -1,0 +1,138 @@
+{
+	"_comment_" : "---------- Basic & backend setup ----------",
+
+	"Debug"                                  : false,
+	"ListenAddress"                          : ":3000",
+	"MySQLOrchestratorHost"                  : "localhost",
+	"MySQLOrchestratorPort"                  : 3306,
+	"MySQLOrchestratorDatabase"              : "orchestrator",
+	"MySQLOrchestratorCredentialsConfigFile" : "/home/test/orchestrator-3.0.3/etc/orchestrator-backend.cnf",
+
+	"_comment_" : "---------- Discovery: polling servers ----------",
+
+	"MySQLTopologyCredentialsConfigFile"   : "/home/test/orchestrator-3.0.3/etc/orchestrator-topology.cnf",
+	"InstancePollSeconds"                  : 5,
+	"DiscoverByShowSlaveHosts"             : true,
+
+	"_comment_" : "---------- Discovery: name resolve ----------",
+
+	"HostnameResolveMethod"                : "default",
+	"MySQLHostnameResolveMethod"           : "@@hostname",
+
+	"_comment_" : "---------- Discovery : classifying servers ----------",
+
+	"ReplicationLagQuery"           : "select absolute_lag from topology.heartbeat",
+	"DetectClusterAliasQuery"       : "select ifnull(max(cluster_name), '') as cluster_alias from topology.cluster where anchor = 1",
+	"DetectClusterDomainQuery"      : "select ifnull(max(cluster_domain), '') as cluster_domain from topology.cluster where anchor = 1",
+	"DataCenterPattern"             : "[.]([^.]+)[.][^.]+[.]domain[.]com",
+	"DetectDataCenterQuery"         : "select substring_index(substring_index(@@hostname, '-', 3), '-', -1) as dc",
+	"PhysicalEnvironmentPattern"    : "",
+	
+	"ReplicationLagQuery"           : "select ROUND(UNIX_TIMESTAMP() - UNIX_TIMESTAMP(ts) + 0.05) from topology.heartbeat",
+
+	"_comment_" : "---------- Pseudo-GTID ----------",
+
+	"PseudoGTIDPattern"                 : "drop view if exists `topology`.`_pseudo_gtid_hint__asc:",
+	"PseudoGTIDPatternIsFixedSubstring" : true,
+	"PseudoGTIDMonotonicHint"           : "asc:",
+	"DetectPseudoGTIDQuery"             : "elect count(*) as pseudo_gtid_exists from topology.pseudo_gtid_status where anchor = 1 and time_generated > now() - interval 2 hour",
+	
+	"PseudoGTIDPattern"                 : "",
+	"DetectPseudoGTIDQuery"             : "",
+
+	"_comment_" : "---------- Recovery : basic config ----------",
+
+	"RecoveryPollSeconds"                : 2,
+	"FailureDetectionPeriodBlockMinutes" : 60,
+
+	"_comment_" : "---------- Recovery : general recovery rules ----------",
+
+	"RecoveryPeriodBlockSeconds"    : 10,
+	"RecoveryIgnoreHostnameFilters" : [],
+	"RecoverMasterClusterFilters"   : [
+			"thiscluster",
+			"thatcluster"
+	],
+	"RecoverIntermediateMasterClusterFilters" : [
+			"*"
+	],
+
+	"RecoverMasterClusterFilters"   : [
+			"*"
+	],
+
+	"_comment_" : "---------- Recovery : hooks ----------",
+
+	"OnFailureDetectionProcesses" : [
+     "echo 'Detected {failureType} on {failureCluster}. Affected replicas: {countReplicas}' >> /tmp/recovery.log"
+	],
+	"PreFailoverProcesses" : [
+     "echo 'Will recover from {failureType} on {failureCluster}' >> /tmp/recovery.log"
+	],
+	"PostFailoverProcesses" : [
+     "echo '(for all types) Recovered from {failureType} on {failureCluster}. Failed: {failedHost}:{failedPort}; Successor: {successorHost}:{successorPort}' >> /tmp/recovery.log"
+	],
+	"PostUnsuccessfulFailoverProcesses" : [],
+	"PostMasterFailoverProcesses" : [
+     "echo 'Recovered from {failureType} on {failureCluster}. Failed: {failedHost}: {failedPort}; Promoted: {successorHost}:{successorPort}' >> /tmp/recovery.log"
+	],
+	"PostIntermediateMasterFailoverProcesses" : [],
+
+	"_comment_" : "---------- Recovery : promotion actions ----------",
+	
+	"ApplyMySQLPromotionAfterMasterFailover"     : true,
+	"MasterFailoverLostInstancesDowntimeMinutes" : 10,
+	"FailMasterPromotionIfSQLThreadNotUpToDate"  : true,
+	"DetachLostReplicasAfterMasterFailover"      : true,
+
+	"_comment_" : "---------- RAFT setup ----------",
+	
+	"RaftEnabled" : false,
+	"RaftBind"    : "<ip.or.fqdn.of.this.orchestrator.node>",
+	"DefaultRaftPort": 10008,
+	"RaftNodes"   : [
+     "<ip.or.fqdn.of.orchestrator.node1>",
+     "<ip.or.fqdn.of.orchestrator.node2>",
+     "<ip.or.fqdn.of.orchestrator.node3>"
+	],
+
+	"_comment_" : "---------- Security : none ----------",
+
+	"AuthenticationMethod" : "",
+
+	"_comment_" : "---------- Security : read-only ----------",
+	
+	"ReadOnly": false,
+
+	"_comment_" : "---------- Security : basic ----------",
+
+	"AuthenticationMethod" : "basic",
+	"HTTPAuthUser"         : "dba_team",
+	"HTTPAuthPassword"     : "time_for_dinner",
+
+	"_comment_" : "---------- Security : multi ----------",
+
+	"AuthenticationMethod" : "multi",
+	"HTTPAuthUser"         : "dba_team",
+	"HTTPAuthPassword"     : "time_for_dinner",
+
+	"AuthenticationMethod" : "",
+	"HTTPAuthUser"         : "",
+	"HTTPAuthPassword"     : "",
+
+	"_comment_" : "---------- Security : headers ----------",
+
+	"ListenAddress"        : "127.0.0.1:3000",
+	"AuthenticationMethod" : "proxy",
+	"AuthUserHeader"       : "X-Forwarded-User",
+	"PowerAuthUsers"       : [
+		"wallace", "gromit", "shaun"
+	],
+
+	"ListenAddress"        : ":3000",
+	"AuthenticationMethod" : "",
+	"AuthUserHeader"       : "",
+	"PowerAuthUsers"       : [
+		"*"
+	]
+}
