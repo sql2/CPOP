@@ -1,0 +1,40 @@
+{
+  "datacenter"       : "Marvel_DC",
+  "node_name"        : "consul-server-01",
+  "client_addr"      : "0.0.0.0",
+  "advertise_addr"   : "172.16.10.1",
+  "server"           : true,
+  "bootstrap"        : true,
+  "log_level"        : "INFO",
+  "data_dir"         : "/tmp/consul",
+  "dns_config" : {
+    "allow_stale"    : true,
+    "node_ttl"       : "60s",
+    "only_passing"   : true,
+    "service_ttl"    : {
+                        "*": "10s"
+                     }
+  },
+  "retry_join":
+  [
+    "172.16.10.1",
+    "172.16.10.2",
+    "172.16.10.3"
+  ],
+  "ui"                   : true,
+  "leave_on_terminate"   : true,
+  "enable_script_checks" : true,
+  "disable_update_check" : true,
+  "service" : {   
+        "id"       : "consul-cluster",
+        "name"     : "consul-cluster",
+        "address"  : "",
+        "tags" : [ 
+           "linux",
+           "consul-server"
+        ],
+        "meta" : {
+           "meta"  : "I am a meta." 
+        }
+  }
+}
