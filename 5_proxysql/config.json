@@ -1,0 +1,50 @@
+{
+  "datacenter"     : "Marvel_DC",
+  "node_name"      : "proxysql",
+  "client_addr"    : "0.0.0.0",
+  "advertise_addr" : "172.16.50.1",
+  "server"         : false,
+  "bootstrap"      : false,
+  "log_level"      : "INFO",
+  "data_dir"       : "/tmp/consul",
+  "dns_config" : {
+    "allow_stale"  : true,
+    "node_ttl"     : "60s",
+    "only_passing" : true,
+    "service_ttl"  : { 
+                        "*": "10s"
+                     }   
+  },
+  "retry_join" :
+  [
+    "172.16.10.1",
+    "172.16.10.2",
+    "172.16.10.3"
+  ],
+  "watches": [
+    {
+      "type" : "key",
+      "key"  : "mysql/servers",
+      "args" : ["/root/handler.sh"]
+    }
+  ],
+  "ui"                   : false,
+  "leave_on_terminate"   : true,
+  "enable_script_checks" : true,
+  "disable_update_check" : true,
+  "services" : [
+    {
+      "id"     : "proxysql",
+      "name"   : "proxysql",
+      "checks" : [
+        {
+          "id"       : "port",
+          "name"     : "Listen on port 3306",
+          "tcp"      : "127.0.0.1:3306",
+          "interval" : "3s",
+          "timeout"  : "1s"
+        }
+      ]
+    }
+  ]
+}

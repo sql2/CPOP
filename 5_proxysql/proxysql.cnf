@@ -1,0 +1,90 @@
+datadir="/var/lib/proxysql"
+
+admin_variables =
+{
+  admin_credentials="admin:admin"
+  mysql_ifaces="0.0.0.0:6032"
+  refresh_interval=2000
+}
+
+mysql_variables =
+{
+  commands_stats=true
+  connect_retries_on_failure=1
+  connect_timeout_server=1000
+  connect_timeout_server_max=1000
+  default_query_delay=0
+  default_query_timeout=36000000
+  default_schema="information_schema"
+  have_compress=true
+  interfaces="0.0.0.0:3306;/tmp/proxysql_admin.sock"
+  max_connections=100
+  monitor_connect_interval=60000
+  monitor_history=600000
+  monitor_password="monitor"
+  monitor_ping_interval=10000
+  monitor_read_only_interval=1500
+  monitor_read_only_timeout=500
+  monitor_username="monitor"
+  ping_timeout_server=500
+  poll_timeout=2000
+  sessions_sort=true
+  stacksize=1048576
+  threads=4
+}
+
+mysql_users =
+(
+  {
+    active                 = 1
+    default_hostgroup      = 0
+    max_connections        = 100
+    password               = "sandbox"
+    username               = "sandbox"
+    transaction_persistent = 1
+  }
+)
+
+mysql_query_rules =
+(
+  {
+    active=1
+    apply=1
+    destination_hostgroup=0
+    log=1
+    match_pattern="^SELECT .* FOR UPDATE$"
+    rule_id=1
+  },
+  {
+    active=1
+    apply=1
+    destination_hostgroup=1
+    log=1
+    match_pattern="^SELECT"
+    rule_id=2
+  },
+  {
+    active=1
+    apply=1
+    destination_hostgroup=0
+    log=1
+    match_pattern="^SELECT GET_LOCK.*"
+    rule_id=3
+  },
+  {
+    active=1
+    apply=1
+    destination_hostgroup=0
+    log=1
+    match_pattern="^SELECT RELEASE_LOCK.*"
+    rule_id=3
+  }
+)
+
+mysql_replication_hostgroups =
+(
+  {
+    reader_hostgroup=1
+    writer_hostgroup=0
+  }
+)
