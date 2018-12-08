@@ -1,0 +1,47 @@
+{
+  "datacenter"     : "Marvel_DC",
+  "node_name"      : "#NODE_NAME",
+  "client_addr"    : "0.0.0.0",
+  "advertise_addr" : "172.16.40.1",
+  "server"         : false,
+  "bootstrap"      : false,
+  "log_level"      : "INFO",
+  "data_dir"       : "/tmp/consul",
+  "dns_config": {
+    "allow_stale"  : true,
+    "node_ttl"     : "60s",
+    "only_passing" : true,
+    "service_ttl"  : { 
+                        "*": "10s"
+                     }   
+  },
+  "retry_join" :
+  [
+    "172.16.10.1",
+    "172.16.10.2",
+    "172.16.10.3"
+  ],
+  "ui"                   : false,
+  "leave_on_terminate"   : true,
+  "enable_script_checks" : true,
+  "disable_update_check" : true,
+  "watches": [
+    {
+      "type" : "event",
+      "name" : "deploy",
+      "args" : ["/root/provisioning.sh"]
+    }
+  ],
+  "service" : {   
+        "id"       : "mysql-service",
+        "name"     : "mysql-service",
+        "address"  : "",
+        "tags" : [ 
+           "linux",
+           "mysql"
+        ],
+        "meta" : {
+           "meta"  : "You are a meta." 
+        }
+  }
+}
