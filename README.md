@@ -43,3 +43,16 @@ Conul + ProxySQL + Orchestrator + PMM
 
 # scenario
 + 0.run -> 1.run -> 2.run -> 3.run -> 4.master -> 5.run -> 6.run -> 4.slave1 -> 5.slave2
+
+# github
++ https://github.com/swapbyt3s/MySQLSandbox
++ https://github.com/wix-incubator/ocp
+
++ https://github.com/hashicorp/consul
++ https://github.com/github/orchestrator
++ https://github.com/percona/pmm-server
++ https://github.com/sysown/proxysql
+
+# slide
++ https://www.percona.com/live/e17/sites/default/files/slides/Orchestrating%20ProxySQL%20with%20Orchestrator%20and%20Consul%20-%20FileId%20-%20115583.pdf
++ https://www.percona.com/live/18/sites/default/files/slides/Orchestrator%20High%20Availability%20Tutorial%20-%20FileId%20-%20137032.pdf
