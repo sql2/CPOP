@@ -26,16 +26,16 @@ Conul + ProxySQL + Orchestrator + PMM
 
 4. MySQL Server
   + build.sh
-  + master.sh
-  + slave1.sh
-  + slave2.sh
+  + master.sh : 3306 port
+  + slave1.sh : 3307 port
+  + slave2.sh : 3308 port
 
 
-5. ProxySQL Server
+5. ProxySQL Server : 3366 port
   + build.sh
   + run.sh
   + http://127.0.0.1:6080
-
+  
 
 6. Stress shell
   + run.sh
