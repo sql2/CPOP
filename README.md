@@ -1,5 +1,5 @@
 # CPOP
-Conul + ProxySQL + Orchestrator + PMM
+Consul + ProxySQL + Orchestrator + PMM
 
 
 0. Create network
