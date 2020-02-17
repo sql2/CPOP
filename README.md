@@ -56,3 +56,4 @@ Consul + ProxySQL + Orchestrator + PMM
 # slide
 + https://www.percona.com/live/e17/sites/default/files/slides/Orchestrating%20ProxySQL%20with%20Orchestrator%20and%20Consul%20-%20FileId%20-%20115583.pdf
 + https://www.percona.com/live/18/sites/default/files/slides/Orchestrator%20High%20Availability%20Tutorial%20-%20FileId%20-%20137032.pdf
++ https://www.slideshare.net/LeeHyeongchae/ocp-with-super-tengen-toppa
