@@ -34,7 +34,7 @@ RUN chmod +x /usr/local/bin/jq-linux64 && \
 # -----------------------------------------------------------------------------
 # Install the Percona repository package
 # -----------------------------------------------------------------------------
-RUN yum -y --setopt=tsflags=nodocs install http://www.percona.com/downloads/percona-release/redhat/0.1-6/percona-release-0.1-6.noarch.rpm
+RUN yum -y --setopt=tsflags=nodocs install https://www.percona.com/redir/downloads/percona-release/redhat/1.0-25/percona-release-1.0-25.noarch.rpm
 RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-Percona
 
 # -----------------------------------------------------------------------------
