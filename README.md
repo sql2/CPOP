@@ -35,6 +35,7 @@ Consul + ProxySQL + Orchestrator + PMM
   + build.sh
   + run.sh
   + http://127.0.0.1:6080
+	+ stats:stats
   
 
 6. Stress shell
